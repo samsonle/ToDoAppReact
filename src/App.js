@@ -14,22 +14,25 @@ class App extends React.Component {
         { action: "Get Shoes", done: false },
         { action: "Collect Tickets", done: true },
         { action: "Call Joe", done: false }
-      ]
+      ],
+      showCompleted: true
     };
   }
 
   createNewTodo = task => {
     if (!this.state.todoItems.find(item => item.action === task)) {
-      this.setState({
-        todoItems: [
-          ...this.state.todoItems,
-          {
-            action: this.state.newItemText,
-            done: false
-          }
-        ],
-        showCompleted: true
-      });
+      this.setState(
+        {
+          todoItems: [
+            ...this.state.todoItems,
+            {
+              action: this.state.newItemText,
+              done: false
+            }
+          ]
+        },
+        () => localStorage.setItem("todos", JSON.stringify(this.state))
+      );
     }
   };
 
@@ -48,8 +51,22 @@ class App extends React.Component {
       ));
   };
 
-  changeStateData = () => {
-    this.setState({ userName: this.state.userName === "Sam" ? "Le" : "Sam" });
+  componentDidMount = () => {
+    let data = localStorage.getItem("todos");
+    this.setState(
+      data != null
+        ? JSON.parse(data)
+        : {
+            userName: "Sam",
+            todoItems: [
+              { action: "Buy Flowers", done: false },
+              { action: "Get Shoes", done: false },
+              { action: "Collect Tickets", done: true },
+              { action: "Call Joe", done: false }
+            ],
+            showCompleted: true
+          }
+    );
   };
 
   render = () => {
