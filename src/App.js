@@ -26,7 +26,7 @@ class App extends React.Component {
           todoItems: [
             ...this.state.todoItems,
             {
-              action: this.state.newItemText,
+              action: task,
               done: false
             }
           ]
